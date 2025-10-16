@@ -1,4 +1,4 @@
-    nivel novato 
+Nível novato
 #include <stdio.h>
 #include <string.h>
 
@@ -15,7 +15,7 @@ int main() {
     struct Carta carta1 = {"RJ01", "Rio de Janeiro", 6747815, 1200.27, 400.0, 90};
     struct Carta carta2 = {"MG01", "Belo Horizonte", 2530701, 331.4, 104.0, 55};
 
-    // Escolha do atributo de comparação (pode mudar para "populacao", "area", "pib", "pontosTuristicos")
+    // Escolha do atributo de comparação
     char atributo[] = "pib";
 
     printf("=== SUPER TRUNFO - COMPARAÇÃO DE CARTAS ===\n\n");
@@ -31,7 +31,6 @@ int main() {
 
     printf(">>> Comparando atributo: %s\n", atributo);
 
-    // Lógica de comparação usando if e if-else
     if (strcmp(atributo, "populacao") == 0) {
         if (carta1.populacao > carta2.populacao)
             printf("🏆 Vencedora: %s (maior população)\n", carta1.cidade);
@@ -61,15 +60,15 @@ int main() {
         else
             printf("🤝 Empate nos pontos turísticos!\n");
     } else {
+        printf("Atributo inválido!\n");
     }
 
     return 0;
-    nivel aventureiro
 }
+Nível aventureiro
     #include <stdio.h>
 #include <string.h>
 
-// Estrutura para a carta
 struct Carta {
     char codigo[10];
     char cidade[50];
@@ -79,8 +78,7 @@ struct Carta {
     int pontosTuristicos;
 };
 
-// Função para exibir uma carta
-void exibir Carta(struct Carta carta) {
+void exibirCarta(struct Carta carta) {
     printf("\nCidade: %s (%s)", carta.cidade, carta.codigo);
     printf("\nPopulação: %d", carta.populacao);
     printf("\nÁrea: %.2f km²", carta.area);
@@ -88,7 +86,6 @@ void exibir Carta(struct Carta carta) {
     printf("\nPontos Turísticos: %d\n", carta.pontosTuristicos);
 }
 
-// Função principal
 int main() {
     struct Carta carta1 = {"RJ01", "Rio de Janeiro", 6747815, 1200.27, 400.0, 90};
     struct Carta carta2 = {"MG01", "Belo Horizonte", 2530701, 331.4, 104.0, 55};
@@ -97,13 +94,9 @@ int main() {
 
     printf("=== SUPER TRUNFO - NÍVEL AVENTUREIRO ===\n");
 
-    // Exibe as cartas
-    printf("\n--- Carta 1 ---");
     exibirCarta(carta1);
-    printf("\n--- Carta 2 ---");
     exibirCarta(carta2);
 
-    // Menu interativo
     printf("\nEscolha o atributo para comparar:\n");
     printf("1 - População\n");
     printf("2 - Área\n");
@@ -112,7 +105,6 @@ int main() {
     printf("Escolha (1-4): ");
     scanf("%d", &opcao);
 
-    // Switch com comparações aninhadas
     switch (opcao) {
         case 1:
             printf("\n>>> Comparando por População...\n");
@@ -121,7 +113,7 @@ int main() {
             else if (carta2.populacao > carta1.populacao)
                 printf("🏆 %s venceu com maior população!\n", carta2.cidade);
             else {
-                printf("Empate na população! Verificando PIB como critério de desempate...\n");
+                printf("Empate! Usando PIB como desempate...\n");
                 if (carta1.pib > carta2.pib)
                     printf("🏆 %s venceu pelo maior PIB!\n", carta1.cidade);
                 else if (carta2.pib > carta1.pib)
@@ -146,7 +138,7 @@ int main() {
             else if (carta2.pib > carta1.pib)
                 printf("🏆 %s venceu com maior PIB!\n", carta2.cidade);
             else {
-                printf("Empate no PIB! Verificando população como critério de desempate...\n");
+                printf("Empate! Usando população como desempate...\n");
                 if (carta1.populacao > carta2.populacao)
                     printf("🏆 %s venceu pelo maior número de habitantes!\n", carta1.cidade);
                 else if (carta2.populacao > carta1.populacao)
@@ -165,14 +157,15 @@ int main() {
                 printf("🤝 Empate nos pontos turísticos!\n");
             break;
         default:
+            printf("Opção inválida!\n");
     }
+
     return 0;
-    }    
-    nivel mestre
+}
+Nível mestre 
     #include <stdio.h>
 #include <string.h>
 
-// Estrutura para a carta
 struct Carta {
     char codigo[10];
     char cidade[50];
@@ -182,22 +175,35 @@ struct Carta {
     int pontosTuristicos;
 };
 
-// Função para exibir uma carta
 void exibirCarta(struct Carta carta) {
     printf("\nCidade: %s (%s)", carta.cidade, carta.codigo);
     printf("\nPopulação: %d", carta.populacao);
     printf("\nÁrea: %.2f km²", carta.area);
     printf("\nPIB: R$%.1f bilhões", carta.pib);
-    printf("\nPontos Turísticos: %d\n", carta.pontosTuristicos);
+    printf("\nPontos Turísticos: %d", carta.pontosTuristicos);
+    printf("\nDensidade Populacional: %.2f hab/km²\n", carta.populacao / carta.area);
 }
 
-// Função para comparar dois atributos
-int compararValores(float v1, float v2, int menorVence) {
+float obterValor(struct Carta c, int attr) {
+    switch (attr) {
+        case 1: return c.populacao;
+        case 2: return c.area;
+        case 3: return c.pib;
+        case 4: return c.pontosTuristicos;
+        case 5: return c.populacao / c.area;
+        default: return 0;
+    }
+}
+
+int menorVence(int attr) {
+    return attr == 5;
+}
+
+int compararValores(float v1, float v2, int menor) {
     if (v1 == v2) return 0;
-    return (menorVence ? (v1 < v2 ? 1 : 2) : (v1 > v2 ? 1 : 2));
+    return (menor ? (v1 < v2 ? 1 : 2) : (v1 > v2 ? 1 : 2));
 }
 
-// Função principal
 int main() {
     struct Carta carta1 = {"RJ01", "Rio de Janeiro", 6747815, 1200.27, 400.0, 90};
     struct Carta carta2 = {"MG01", "Belo Horizonte", 2530701, 331.4, 104.0, 55};
@@ -206,13 +212,9 @@ int main() {
 
     printf("=== SUPER TRUNFO - NÍVEL MESTRE ===\n");
 
-    // Exibe as cartas
-    printf("\n--- Carta 1 ---");
     exibirCarta(carta1);
-    printf("\n--- Carta 2 ---");
     exibirCarta(carta2);
 
-    // Menu dinâmico
     printf("\nEscolha dois atributos diferentes para comparar:\n");
     printf("1 - População (maior vence)\n");
     printf("2 - Área (maior vence)\n");
@@ -220,58 +222,36 @@ int main() {
     printf("4 - Pontos Turísticos (maior vence)\n");
     printf("5 - Densidade Populacional (MENOR vence)\n");
 
-    // Leitura dos atributos
     printf("\nDigite o número do 1º atributo: ");
     scanf("%d", &atributo1);
     printf("Digite o número do 2º atributo: ");
     scanf("%d", &atributo2);
 
-    // Validação simples
-    if (atributo1 == atributo2 || atributo1 < 1 || atributo1 > 5 || atributo2 < 1 || atributo2 > 5) {  
+    if (atributo1 == atributo2 || atributo1 < 1 || atributo1 > 5 || atributo2 < 1 || atributo2 > 5) {
+        printf("\nErro: Atributos inválidos ou repetidos. Use números de 1 a 5, diferentes entre si.\n");
+        return 1;
     }
 
-    // Calcula densidade
-    float densidade1 = carta1.populacao / carta1.area;
-    float densidade2 = carta2.populacao / carta2.area;
+    float val1 = obterValor(carta1, atributo1);
+    float val2 = obterValor(carta2, atributo1);
+    int resultado = compararValores(val1, val2, menorVence(atributo1));
 
-    // Função auxiliar para obter o valor de um atributo
-    float obterValor(struct Carta c, int attr) {
-        switch (attr) {
-            case 1: return c.populacao;
-            case 2: return c.area;
-            case 3: return c.pib;
-            case 4: return c.pontosTuristicos;
-            case 5: return c.populacao / c.area;
-            default: return 0;
-        }
-    }
-
-    // Indica se o menor valor vence (apenas para densidade)
-    int menorVence(int attr) {
-        return attr == 5;
-    }
-
-    float val1_a1 = obterValor(carta1, atributo1);
-    float val2_a1 = obterValor(carta2, atributo1);
-    int resultado = compararValores(val1_a1, val2_a1, menorVence(atributo1));
-
-    if (resultado == 1) {
+    if (resultado == 1)
         printf("\n🏆 %s venceu no 1º atributo!\n", carta1.cidade);
-    } else if (resultado == 2) {
+    else if (resultado == 2)
         printf("\n🏆 %s venceu no 1º atributo!\n", carta2.cidade);
-    } else {
-        // Empate no primeiro atributo -> compara o segundo
-        float val1_a2 = obterValor(carta1, atributo2);
-        float val2_a2 = obterValor(carta2, atributo2);
-        int resultado2 = compararValores(val1_a2, val2_a2, menorVence(atributo2));
+    else {
+        printf("\n⚖️ Empate no 1º atributo. Verificando o 2º atributo como critério de desempate...\n");
+        val1 = obterValor(carta1, atributo2);
+        val2 = obterValor(carta2, atributo2);
+        resultado = compararValores(val1, val2, menorVence(atributo2));
 
-        if (resultado2 == 1) {
-            printf("\n⚖️ Empate no 1º atributo.\n🏆 %s venceu no 2º atributo como critério de desempate!\n", carta1.cidade);
-        } else if (resultado2 == 2) {
-            printf("\n⚖️ Empate no 1º atributo.\n🏆 %s venceu no 2º atributo como critério de desempate!\n", carta2.cidade);
-        } else {
-            printf("\n🤝 EMPATE TOTAL!\n👏 Ambas as cidades são incríveis!\n");
-        }
+        if (resultado == 1)
+            printf("🏆 %s venceu no 2º atributo!\n", carta1.cidade);
+        else if (resultado == 2)
+            printf("🏆 %s venceu no 2º atributo!\n", carta2.cidade);
+        else
+            printf("🤝 EMPATE TOTAL! Ambas as cidades são incríveis!\n");
     }
 
     return 0;
